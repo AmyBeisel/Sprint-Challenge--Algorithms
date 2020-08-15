@@ -96,9 +96,48 @@ class SortingRobot:
         """
         Sort the robot's list.
         """
-        # Fill this out
-        pass
+        #while the light is OFF (light_is_on is False)
+        while not self.light_is_on():
+            #turn on the light and chage the contol variable to True
+            self.set_light_on()
 
+            #Enter another while loop - can the robot move to the right?
+            #the robot will move right until arrives at the of the list
+            while self.can_move_right():
+                self.swap_item() # swap the items
+                self.move_right() # and go to the next right point.
+
+                #compare the ineventory with th item in the front of us
+                #if the item we are holding is larger than the item in front 
+                #of us, (compare_item()) method returns a 1:
+
+                if self.compare_item() == 1:
+                    #if yes, swap the item
+                    #if no, do nothing
+                    self.swap_item()
+                    self.set_light_off()
+
+                #now the previous item is None, and the robot holds the pickded item
+                #go back to the previous postion
+                self.move_left()
+                #and drop the held item, so that the robot holds None
+                self.swap_item()
+                #go again to the right
+                self.move_right()
+            
+            #now robot is all the way to the right. What if he can go left?
+            #opposite as going right so, -1 because that would meann the item on the right (holding)
+            #is less than the item in front of us.
+            while self.can_move_left():
+                self.swap_item()
+                self.move_left()
+
+                if self.compare_item() == -1:
+                    self.swap_item()
+                    self.set_light_off()
+                self.move_right()
+                self.swap_item()
+                self.move_left()
 
 if __name__ == "__main__":
     # Test our your implementation from the command line
